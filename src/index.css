@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* ==========================================================
+   Tokens de Popcorn Diary (paleta "Cinta magnética")
+   Cada variable de @theme crea utilidades de Tailwind:
+   --color-lime  ->  bg-lime, text-lime, border-lime...
+   ========================================================== */
+@theme {
+  /* Color */
+  --color-bg: #0F1116;              /* fondo de página */
+  --color-surface: #1B1E26;         /* tarjetas, barras, hojas */
+  --color-surface-raised: #252934;  /* inputs, chips, hover */
+  --color-border: #2C313D;          /* bordes de 1px */
+  --color-lime: #C6F432;            /* primario */
+  --color-lime-hover: #B3E01F;
+  --color-on-lime: #0F1116;         /* texto sobre lima, nunca blanco */
+  --color-orange: #FF8A3D;          /* estrellas y "Nueva" */
+  --color-on-orange: #0F1116;
+  --color-text: #EEF0F3;            /* texto principal (16.5:1) */
+  --color-text-muted: #9AA0AC;      /* texto secundario (7.2:1) */
+  --color-star-empty: #5E6577;      /* contorno de estrella vacía */
+  --color-danger: #FF6B6B;
+  --color-scrim: rgba(15, 17, 22, 0.72); /* velo sobre pósters y detrás de hojas */
+  --color-poster-1: #2A3320;        /* fondos de póster de ejemplo */
+  --color-poster-2: #3D2A1C;
+  --color-poster-3: #1E2A3D;
+  --color-poster-4: #2E2440;
+  --color-poster-5: #3A1F25;
+  --color-poster-6: #22303A;
+
+  /* Tipografía: familias  ->  font-display, font-body */
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, sans-serif;
+
+  /* Tipografía: estilos de la tabla del diseño  ->  text-display, text-h1...
+     Cada uno trae su interlínea, tracking y peso. */
+  --text-display: 56px;
+  --text-display--line-height: 56px;
+  --text-display--letter-spacing: -2px;
+  --text-display--font-weight: 700;
+  --text-display-mobile: 30px;      /* display en móvil */
+  --text-display-mobile--line-height: 32px;
+  --text-display-mobile--letter-spacing: -1px;
+  --text-display-mobile--font-weight: 700;
+
+  --text-h1: 36px;
+  --text-h1--line-height: 40px;
+  --text-h1--letter-spacing: -1px;
+  --text-h1--font-weight: 700;
+
+  --text-h2: 22px;
+  --text-h2--line-height: 28px;
+  --text-h2--letter-spacing: -0.4px;
+  --text-h2--font-weight: 700;
+  --text-h2-mobile: 19px;           /* h2 en móvil */
+  --text-h2-mobile--line-height: 24px;
+  --text-h2-mobile--letter-spacing: -0.4px;
+  --text-h2-mobile--font-weight: 700;
+
+  --text-h3: 16px;
+  --text-h3--line-height: 20px;
+  --text-h3--font-weight: 500;
+
+  --text-body: 15px;
+  --text-body--line-height: 22px;
+  --text-body--font-weight: 400;
+
+  --text-small: 13px;
+  --text-small--line-height: 18px;
+  --text-small--font-weight: 400;
+
+  --text-eyebrow: 12px;
+  --text-eyebrow--line-height: 16px;
+  --text-eyebrow--letter-spacing: 0.6px;
+  --text-eyebrow--font-weight: 600;
+
+  /* Radios  ->  rounded-sm, rounded-md, rounded-lg */
+  --radius-sm: 6px;    /* badges */
+  --radius-md: 10px;   /* pósters, inputs */
+  --radius-lg: 18px;   /* tarjetas grandes, hojas */
+
+  /* Sombras (casi invisibles en oscuro; separamos con bordes) */
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-sheet: 0 -12px 40px rgba(0, 0, 0, 0.5);
+
+  /* Movimiento  ->  ease-out-soft, ease-spring */
+  --ease-out-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+
+  /* Animaciones  ->  animate-fade-up, animate-pop... */
+  --animate-fade-up: fade-up var(--duration-slow) var(--ease-out-soft) both;
+  --animate-pop: pop 220ms var(--ease-spring) both;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-sheet-in: sheet-in var(--duration-slow) var(--ease-out-soft) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes sheet-in {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+}
+
+/* ==========================================================
+   Estilos base
+   ========================================================== */
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Foco visible en toda la app: contorno lima con separación */
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 2px;
+}
+
+/* Si la persona prefiere menos movimiento, dejamos todo casi instantáneo */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
